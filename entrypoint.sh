@@ -45,6 +45,13 @@ if [[ -n "$working_directory" ]]; then
   cd "$working_directory"
 fi
 
+if [[ -n "$extra_system_packages" ]]; then
+  for pkg in $extra_system_packages; do
+    info "Install $pkg by apk"
+    apk --no-cache add "$pkg"
+  done
+fi
+
 if [[ -n "$glob_root_file" ]]; then
   expanded_root_file=()
   for pattern in "${root_file[@]}"; do
@@ -104,13 +111,6 @@ else
     if [[ -n "${!VAR}" ]]; then
       error "Input '${VAR}' is only valid if input 'compiler' is set to 'latexmk'."
     fi
-  done
-fi
-
-if [[ -n "$extra_system_packages" ]]; then
-  for pkg in $extra_system_packages; do
-    info "Install $pkg by apk"
-    apk --no-cache add "$pkg"
   done
 fi
 
